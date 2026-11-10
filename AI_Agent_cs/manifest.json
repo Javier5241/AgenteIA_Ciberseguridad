@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Memoria de incidentes (Ollama)",
+  "version": "1.0.0",
+  "description": "Asistente de ciberseguridad local: sube informes de incidentes, crea memoria con embeddings y consulta con tu modelo de Ollama.",
+  "action": { "default_title": "Abrir asistente de incidentes" },
+  "side_panel": { "default_path": "sidepanel.html" },
+  "background": { "service_worker": "background.js" },
+  "permissions": ["sidePanel", "declarativeNetRequest", "unlimitedStorage"],
+  "host_permissions": ["http://localhost:11434/*", "http://127.0.0.1:11434/*"],
+  "declarative_net_request": {
+    "rule_resources": [{ "id": "ollama_origin", "enabled": true, "path": "rules.json" }]
+  }
+}

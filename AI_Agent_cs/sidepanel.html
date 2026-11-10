@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Memoria de incidentes</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M12 2.5 4.5 5.5v6c0 4.6 3.1 8.2 7.5 10 4.4-1.8 7.5-5.4 7.5-10v-6L12 2.5Z" fill="currentColor"/>
+        <path d="M8.6 9.6h6.8M8.6 12.4h6.8M8.6 15.2h4" fill="none" stroke="var(--panel)" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <h1>Memoria de incidentes</h1>
+    </div>
+    <span id="status" class="status" title="Conexión con Ollama">Conectando…</span>
+  </header>
+
+  <nav role="tablist">
+    <button role="tab" data-tab="chat" aria-selected="true">Consultas</button>
+    <button role="tab" data-tab="mem" aria-selected="false">Memoria <span id="memCount" class="count"></span></button>
+  </nav>
+
+  <section id="chat" class="tab">
+    <div class="bar">
+      <div class="row">
+        <label class="field grow">Modelo <select id="chatModel"></select></label>
+        <button id="newChat" class="ghost" type="button">Nueva conversación</button>
+      </div>
+      <div class="row">
+        <label class="switch"><input type="checkbox" id="useMem" checked><span class="track"></span>Usar memoria</label>
+        <label class="field">Fragmentos <input type="number" id="topk" value="5" min="1" max="15"></label>
+      </div>
+    </div>
+
+    <div id="log" aria-live="polite">
+      <div class="empty">
+        <h2>¿Qué quieres saber?</h2>
+        <p>Si hay documentos en la memoria, la respuesta se basa en ellos y cita la fuente.</p>
+        <div class="suggestions">
+          <button type="button" class="suggest">Resume los incidentes de la memoria</button>
+          <button type="button" class="suggest">¿Qué IOCs aparecen en los informes?</button>
+          <button type="button" class="suggest">¿Cómo contengo un ransomware en una red corporativa?</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="composer">
+      <div class="input-wrap">
+        <textarea id="q" rows="1" placeholder="Escribe tu pregunta de ciberseguridad"></textarea>
+        <button id="send" type="button">Enviar</button>
+      </div>
+      <span class="hint">Enter envía, Mayús+Enter añade una línea</span>
+    </div>
+  </section>
+
+  <section id="mem" class="tab" hidden>
+    <label id="drop" class="drop">
+      <input type="file" id="files" multiple accept=".pdf,.txt,.md,.log,.csv,.json,.xml,.yaml,.yml,.eml,.html,.htm,.ini,.conf,.cfg,.syslog">
+      <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M12 16V5m0 0-4 4m4-4 4 4M5 15v3a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 18v-3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <strong>Subir archivos de incidentes</strong>
+      <span>Arrastra aquí o haz clic. Formatos: pdf (con texto), txt, md, log, csv, json, xml, eml, html.</span>
+    </label>
+    <div id="progress" class="progress" hidden></div>
+
+    <div class="list-head">
+      <p id="stats" class="stats"></p>
+      <button id="clear" class="ghost danger" hidden>Borrar toda la memoria</button>
+    </div>
+    <ul id="docs"></ul>
+
+    <div class="setting">
+      <label>Modelo de embeddings <input type="text" id="embModel" spellcheck="false"></label>
+      <p>Vectoriza los archivos y las preguntas. Si lo cambias, borra la memoria y vuelve a subir los archivos.</p>
+    </div>
+  </section>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>
